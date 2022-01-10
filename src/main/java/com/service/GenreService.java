@@ -2,7 +2,6 @@ package com.service;
 
 import com.context.Genre;
 import com.repository.GenreRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +17,6 @@ public class GenreService {
 
     public List<Genre> getGenres() {
         return repository.findAll();
-    }
-
-    public List<Genre> getGenresSortedByTitle(Sort.Direction direction) {
-        return repository.findAll(Sort.by(direction, "title"));
     }
 
     public Optional<Genre> getGenreById(long id) {

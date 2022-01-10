@@ -2,7 +2,6 @@ package com.service;
 
 import com.context.Friend;
 import com.repository.FriendRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +17,6 @@ public class FriendService {
 
     public List<Friend> getFriends() {
         return repository.findAll();
-    }
-
-    public List<Friend> getFriendsSortedByFirstName(Sort.Direction direction) {
-        return repository.findAll(Sort.by(direction, "first_name"));
-    }
-
-    public List<Friend> getFriendsSortedByLastName(Sort.Direction direction) {
-        return repository.findAll(Sort.by(direction, "last_name"));
     }
 
     public Optional<Friend> getFriendById(long id) {
