@@ -1,7 +1,5 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,12 +8,12 @@ import java.util.Set;
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "title", length = 32, nullable = false)
     private String title;
 
-    @Column(name = "description", length = 100)
+    @Column(name = "description", length = 500)
     private String description;
 
     @OneToOne
@@ -23,21 +21,19 @@ public class Genre {
     private Genre parentGenre;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
-    @JsonBackReference
     private Set<Book> books;
 
     public Genre() {
     }
 
-    public Genre(long id, String title, String description, Genre parentGenre, Set<Book> books) {
-        this.id = id;
+    public Genre(String title, String description, Genre parentGenre, Set<Book> books) {
         this.title = title;
         this.description = description;
         this.parentGenre = parentGenre;
         this.books = books;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

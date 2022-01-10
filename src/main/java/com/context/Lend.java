@@ -1,7 +1,6 @@
 package com.context;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,17 +14,16 @@ public class Lend {
     private long id;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("book_copy")
     @JoinColumn(name = "book_copy_id", nullable = false)
     private BookCopy bookCopy;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("friend")
     @JoinColumn(name = "friend_id", nullable = false)
     private Friend friend;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lend")
-    @JsonBackReference
     private Set<LendExtension> lendExtensions;
 
     @Column(name = "lend_time", nullable = false)

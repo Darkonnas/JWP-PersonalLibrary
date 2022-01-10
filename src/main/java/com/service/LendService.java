@@ -1,12 +1,11 @@
 package com.service;
 
+import com.context.Friend;
 import com.context.Lend;
 import com.repository.LendExtensionRepository;
 import com.repository.LendRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,32 +23,8 @@ public class LendService {
         return lendRepository.findAll();
     }
 
-    public List<Lend> getLendsSortedByLendTime(Sort.Direction direction) {
-        return lendRepository.findAll(Sort.by(direction, "lend_time"));
-    }
-
-    public List<Lend> getLendsSortedByReturnTime(Sort.Direction direction) {
-        return lendRepository.findAll(Sort.by(direction, "return_time"));
-    }
-
-    public List<Lend> getLendsBefore(LocalDateTime lendTime) {
-        return lendRepository.findAllByLendTimeBefore(lendTime);
-    }
-
-    public List<Lend> getLendsAfter(LocalDateTime lendTime) {
-        return lendRepository.findAllByLendTimeAfter(lendTime);
-    }
-
-    public List<Lend> getLendsReturnedBefore(LocalDateTime returnTime) {
-        return lendRepository.findAllByReturnTimeBefore(returnTime);
-    }
-
-    public List<Lend> getLendsReturnedAfter(LocalDateTime returnTime) {
-        return lendRepository.findAllByReturnTimeAfter(returnTime);
-    }
-
-    public List<Lend> getLendsByStatus(Lend.LendStatus lendStatus) {
-        return lendRepository.findAllByLendStatus(lendStatus);
+    public List<Lend> getLendsByFriend(Friend friend) {
+        return lendRepository.findAllByFriend(friend);
     }
 
     public Optional<Lend> getLendById(long id) {
