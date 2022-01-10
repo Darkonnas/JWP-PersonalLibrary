@@ -1,7 +1,7 @@
 package com.service;
 
 import com.context.Lend;
-import com.context.LendKey;
+import com.repository.LendExtensionRepository;
 import com.repository.LendRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,53 +12,55 @@ import java.util.Optional;
 
 @Service
 public class LendService {
-    private final LendRepository repository;
+    private final LendRepository lendRepository;
+    private final LendExtensionRepository lendExtensionRepository;
 
-    public LendService(LendRepository repository) {
-        this.repository = repository;
+    public LendService(LendRepository repository, LendExtensionRepository lendExtensionRepository) {
+        this.lendRepository = repository;
+        this.lendExtensionRepository = lendExtensionRepository;
     }
 
     public List<Lend> getLends() {
-        return repository.findAll();
+        return lendRepository.findAll();
     }
 
     public List<Lend> getLendsSortedByLendTime(Sort.Direction direction) {
-        return repository.findAll(Sort.by(direction, "lend_time"));
+        return lendRepository.findAll(Sort.by(direction, "lend_time"));
     }
 
     public List<Lend> getLendsSortedByReturnTime(Sort.Direction direction) {
-        return repository.findAll(Sort.by(direction, "return_time"));
+        return lendRepository.findAll(Sort.by(direction, "return_time"));
     }
 
     public List<Lend> getLendsBefore(LocalDateTime lendTime) {
-        return repository.findAllByLendTimeBefore(lendTime);
+        return lendRepository.findAllByLendTimeBefore(lendTime);
     }
 
     public List<Lend> getLendsAfter(LocalDateTime lendTime) {
-        return repository.findAllByLendTimeAfter(lendTime);
+        return lendRepository.findAllByLendTimeAfter(lendTime);
     }
 
     public List<Lend> getLendsReturnedBefore(LocalDateTime returnTime) {
-        return repository.findAllByReturnTimeBefore(returnTime);
+        return lendRepository.findAllByReturnTimeBefore(returnTime);
     }
 
     public List<Lend> getLendsReturnedAfter(LocalDateTime returnTime) {
-        return repository.findAllByReturnTimeAfter(returnTime);
+        return lendRepository.findAllByReturnTimeAfter(returnTime);
     }
 
     public List<Lend> getLendsByStatus(Lend.LendStatus lendStatus) {
-        return repository.findAllByLendStatus(lendStatus);
+        return lendRepository.findAllByLendStatus(lendStatus);
     }
 
-    public Optional<Lend> getLendById(LendKey id) {
-        return repository.findById(id);
+    public Optional<Lend> getLendById(long id) {
+        return lendRepository.findById(id);
     }
 
     public void saveLend(Lend lend) {
-        repository.save(lend);
+        lendRepository.save(lend);
     }
 
     public void deleteAuthor(Lend lend) {
-        repository.delete(lend);
+        lendRepository.delete(lend);
     }
 }

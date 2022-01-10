@@ -1,27 +1,32 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "lend")
 public class Lend {
-    @EmbeddedId
-    private LendKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @ManyToOne
-    @MapsId("bookId")
     @JsonManagedReference
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    @JoinColumn(name = "book_copy_id", nullable = false)
+    private BookCopy bookCopy;
 
     @ManyToOne
-    @MapsId("friendId")
     @JsonManagedReference
     @JoinColumn(name = "friend_id", nullable = false)
     private Friend friend;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lend")
+    @JsonBackReference
+    private Set<LendExtension> lendExtensions;
 
     @Column(name = "lend_time", nullable = false)
     private LocalDateTime lendTime;
@@ -36,11 +41,16 @@ public class Lend {
     public Lend() {
     }
 
-    public Lend(LendKey id, LocalDateTime lendTime, LocalDateTime returnTime, LendStatus lendStatus) {
+    public Lend(long id, Set<LendExtension> lendExtensions, LocalDateTime lendTime, LocalDateTime returnTime, LendStatus lendStatus) {
         this.id = id;
+        this.lendExtensions = lendExtensions;
         this.lendTime = lendTime;
         this.returnTime = returnTime;
         this.lendStatus = lendStatus;
+    }
+
+    public Set<LendExtension> getLendExtensions() {
+        return lendExtensions;
     }
 
     public LocalDateTime getLendTime() {
@@ -57,6 +67,7 @@ public class Lend {
 
     public enum LendStatus {
         LENT,
+        OVERDUE,
         RETURNED
     }
 

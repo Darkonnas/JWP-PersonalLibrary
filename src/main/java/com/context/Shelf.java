@@ -21,23 +21,27 @@ public class Shelf {
     @Column(name = "room", nullable = false)
     private long room;
 
-    @Column(name = "starting_letter", nullable = false)
+    @Column(name = "capacity")
+    private long capacity;
+
+    @Column(name = "starting_letter")
     private char startingLetter;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shelf")
     @JsonBackReference
-    private Set<Book> books;
+    private Set<BookCopy> bookCopies;
 
     public Shelf() {
     }
 
-    public Shelf(long id, long level, long rack, long room, char startingLetter, Set<Book> books) {
+    public Shelf(long id, long level, long rack, long room, long capacity, char startingLetter, Set<BookCopy> bookCopies) {
         this.id = id;
         this.level = level;
         this.rack = rack;
         this.room = room;
+        this.capacity = capacity;
         this.startingLetter = startingLetter;
-        this.books = books;
+        this.bookCopies = bookCopies;
     }
 
     public long getId() {
@@ -56,12 +60,16 @@ public class Shelf {
         return room;
     }
 
+    public long getCapacity() {
+        return capacity;
+    }
+
     public char getStartingLetter() {
         return startingLetter;
     }
 
-    public Set<Book> getBooks() {
-        return books;
+    public Set<BookCopy> getBookCopies() {
+        return bookCopies;
     }
 
     public void updateShelf(Shelf shelf) {
@@ -69,6 +77,6 @@ public class Shelf {
         this.rack = shelf.rack;
         this.room = shelf.room;
         this.startingLetter = shelf.startingLetter;
-        this.books = shelf.books;
+        this.bookCopies = shelf.bookCopies;
     }
 }

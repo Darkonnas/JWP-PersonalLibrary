@@ -32,27 +32,21 @@ public class Book {
     @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     private Genre genre;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "shelf_id", referencedColumnName = "id")
-    private Shelf shelf;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     @JsonBackReference
-    private Set<Lend> lends;
+    private Set<BookCopy> copies;
 
     public Book() {
     }
 
-    public Book(long id, String title, String description, long numberOfPages, Author author, Genre genre, Shelf shelf, Set<Lend> lends) {
+    public Book(long id, String title, String description, long numberOfPages, Author author, Genre genre, Shelf shelf, Set<BookCopy> copies, Set<Lend> lends) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.numberOfPages = numberOfPages;
         this.author = author;
         this.genre = genre;
-        this.shelf = shelf;
-        this.lends = lends;
+        this.copies = copies;
     }
 
     public long getId() {
@@ -79,12 +73,8 @@ public class Book {
         return genre;
     }
 
-    public Shelf getShelf() {
-        return shelf;
-    }
-
-    public Set<Lend> getLends() {
-        return lends;
+    public Set<BookCopy> getCopies() {
+        return copies;
     }
 
     public void updateBook(Book book) {
@@ -93,8 +83,6 @@ public class Book {
         this.numberOfPages = book.numberOfPages;
         this.author = book.author;
         this.genre = book.genre;
-        this.shelf = book.shelf;
-        this.lends = book.lends;
     }
 
     public enum SortingCriteria {
