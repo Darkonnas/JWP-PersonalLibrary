@@ -1,9 +1,7 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "friend")
@@ -22,13 +20,12 @@ public class Friend {
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
-    @JsonBackReference
-    private Set<Lend> lends;
+    private List<Lend> lends;
 
     public Friend() {
     }
 
-    public Friend(long id, String firstName, String lastName, String address, Set<Lend> lentBooks) {
+    public Friend(long id, String firstName, String lastName, String address, List<Lend> lentBooks) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,7 +49,7 @@ public class Friend {
         return address;
     }
 
-    public Set<Lend> getLends() {
+    public List<Lend> getLends() {
         return lends;
     }
 

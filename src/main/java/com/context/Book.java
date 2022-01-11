@@ -3,7 +3,7 @@ package com.context;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -32,7 +32,7 @@ public class Book {
     private Genre genre;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-    private Set<BookCopy> copies;
+    private List<BookCopy> copies;
 
     public Book() {
     }
@@ -69,7 +69,7 @@ public class Book {
         return genre;
     }
 
-    public Set<BookCopy> getCopies() {
+    public List<BookCopy> getCopies() {
         return copies;
     }
 

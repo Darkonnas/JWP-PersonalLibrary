@@ -1,7 +1,7 @@
 package com.context;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "author")
@@ -17,7 +17,7 @@ public class Author {
     private String lastName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    private Set<Book> books;
+    private List<Book> books;
 
     public Author() {
     }
@@ -34,7 +34,7 @@ public class Author {
         return lastName;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 

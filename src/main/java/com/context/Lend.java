@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "lend")
@@ -24,7 +24,7 @@ public class Lend {
     private Friend friend;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lend")
-    private Set<LendExtension> lendExtensions;
+    private List<LendExtension> lendExtensions;
 
     @Column(name = "lend_time", nullable = false)
     private LocalDateTime lendTime;
@@ -39,15 +39,7 @@ public class Lend {
     public Lend() {
     }
 
-    public Lend(long id, Set<LendExtension> lendExtensions, LocalDateTime lendTime, LocalDateTime returnTime, LendStatus lendStatus) {
-        this.id = id;
-        this.lendExtensions = lendExtensions;
-        this.lendTime = lendTime;
-        this.returnTime = returnTime;
-        this.lendStatus = lendStatus;
-    }
-
-    public Set<LendExtension> getLendExtensions() {
+    public List<LendExtension> getLendExtensions() {
         return lendExtensions;
     }
 

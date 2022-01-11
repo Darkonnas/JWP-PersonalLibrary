@@ -1,6 +1,6 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -21,12 +21,12 @@ public class BookReviewComment {
     private int downvoteCount;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("review")
     @JoinColumn(name = "review_id", nullable = false)
     private BookReview review;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("author")
     @JoinColumn(name = "author_id", nullable = false)
     private Friend author;
 

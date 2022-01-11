@@ -1,14 +1,14 @@
 package com.context;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "book_copy")
 public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    public Long id;
 
     @Column(name = "book_condition", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -23,7 +23,41 @@ public class BookCopy {
     private Shelf shelf;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookCopy")
-    private Set<Lend> lends;
+    private List<Lend> lends;
+
+    public BookCopy() {}
+
+    public BookCopy(BookCondition bookCondition, Book book) {
+        this.bookCondition = bookCondition;
+        this.book = book;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public BookCondition getBookCondition() {
+        return bookCondition;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public Shelf getShelf() {
+        return shelf;
+    }
+    public List<Lend> getLends() {
+        return lends;
+    }
+
+    public void setBookCondition(BookCondition bookCondition) {
+        this.bookCondition = bookCondition;
+    }
+
+    public void setShelf(Shelf shelf) {
+        this.shelf = shelf;
+    }
 
     public enum BookCondition {
         GOOD,

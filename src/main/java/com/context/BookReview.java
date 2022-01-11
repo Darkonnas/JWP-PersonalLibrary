@@ -1,12 +1,11 @@
 package com.context;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "book_review")
@@ -30,22 +29,21 @@ public class BookReview {
     private int downvoteCount;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("book")
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference("author")
     @JoinColumn(name = "author_id", nullable = false)
     private Friend author;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
-    @JsonBackReference
-    private Set<BookReviewComment> comments;
+    private List<BookReviewComment> comments;
 
     public BookReview() {}
 
-    public BookReview(long id, String reviewText, int authorScore, int upvoteCount, int downvoteCount, Book book, Friend author, Set<BookReviewComment> comments) {
+    public BookReview(long id, String reviewText, int authorScore, int upvoteCount, int downvoteCount, Book book, Friend author, List<BookReviewComment> comments) {
         this.id = id;
         this.reviewText = reviewText;
         this.authorScore = authorScore;
@@ -84,7 +82,7 @@ public class BookReview {
         return author;
     }
 
-    public Set<BookReviewComment> getComments() {
+    public List<BookReviewComment> getComments() {
         return comments;
     }
 }
