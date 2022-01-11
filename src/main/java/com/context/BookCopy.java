@@ -1,5 +1,7 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class BookCopy {
     private Shelf shelf;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookCopy")
+    @JsonIgnore
     private List<Lend> lends;
 
     public BookCopy() {}

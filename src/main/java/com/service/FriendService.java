@@ -19,15 +19,15 @@ public class FriendService {
         return repository.findAll();
     }
 
-    public Optional<Friend> getFriendById(long id) {
+    public Optional<Friend> getFriendById(Long id) {
         return repository.findById(id);
     }
 
-    public void saveAuthor(Friend friend) {
+    public void saveFriend(Friend friend) {
         repository.save(friend);
     }
 
-    public void deleteAuthor(Friend friend) {
+    public void deleteFriend(Friend friend) {
         repository.delete(friend);
     }
 }

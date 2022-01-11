@@ -1,5 +1,7 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class Shelf {
     private Character startingLetter;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shelf")
+    @JsonIgnore
     private List<BookCopy> bookCopies;
 
     public Shelf() {

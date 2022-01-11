@@ -19,7 +19,7 @@ public class AuthorService {
         return repository.findAll();
     }
 
-    public Optional<Author> getAuthorById(long id) {
+    public Optional<Author> getAuthorById(Long id) {
         return repository.findById(id);
     }
 

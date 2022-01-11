@@ -1,5 +1,7 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
 public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
@@ -20,20 +22,13 @@ public class Friend {
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
+    @JsonIgnore
     private List<Lend> lends;
 
     public Friend() {
     }
 
-    public Friend(long id, String firstName, String lastName, String address, List<Lend> lentBooks) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.lends = lentBooks;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

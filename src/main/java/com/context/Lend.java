@@ -1,8 +1,9 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,23 +12,26 @@ import java.util.List;
 public class Lend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
-    @JsonBackReference("book_copy")
     @JoinColumn(name = "book_copy_id", nullable = false)
     private BookCopy bookCopy;
 
     @ManyToOne
-    @JsonBackReference("friend")
     @JoinColumn(name = "friend_id", nullable = false)
     private Friend friend;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lend")
+    @JsonIgnore
     private List<LendExtension> lendExtensions;
 
     @Column(name = "lend_time", nullable = false)
     private LocalDateTime lendTime;
+
+    @Column(name = "lend_duration", nullable = false)
+    @Min(0)
+    private Integer lendDuration;
 
     @Column(name = "return_time")
     private LocalDateTime returnTime;
@@ -37,6 +41,26 @@ public class Lend {
     private LendStatus lendStatus;
 
     public Lend() {
+    }
+
+    public Lend(BookCopy bookCopy, Friend friend, LocalDateTime lendTime, Integer lendDuration, LendStatus lendStatus) {
+        this.bookCopy = bookCopy;
+        this.friend = friend;
+        this.lendTime = lendTime;
+        this.lendDuration = lendDuration;
+        this.lendStatus = lendStatus;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public BookCopy getBookCopy() {
+        return bookCopy;
+    }
+
+    public Friend getFriend() {
+        return friend;
     }
 
     public List<LendExtension> getLendExtensions() {
@@ -51,14 +75,26 @@ public class Lend {
         return returnTime;
     }
 
+    public Integer getLendDuration() {
+        return lendDuration;
+    }
+
     public LendStatus getLendStatus() {
         return lendStatus;
+    }
+
+    public void setLendStatus(LendStatus lendStatus) {
+        this.lendStatus = lendStatus;
     }
 
     public enum LendStatus {
         LENT,
         OVERDUE,
         RETURNED
+    }
+
+    public void setLendDuration(Integer lendDuration) {
+        this.lendDuration = lendDuration;
     }
 
     public enum SortingCriteria {

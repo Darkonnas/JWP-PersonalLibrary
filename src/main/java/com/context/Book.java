@@ -1,6 +1,6 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,16 +22,15 @@ public class Book {
     private Long numberOfPages;
 
     @ManyToOne
-    @JsonBackReference("author")
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private Author author;
 
     @ManyToOne
-    @JsonBackReference("genre")
     @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     private Genre genre;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @JsonIgnore
     private List<BookCopy> copies;
 
     public Book() {

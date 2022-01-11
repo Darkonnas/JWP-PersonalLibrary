@@ -1,5 +1,7 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Author {
     private String lastName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonIgnore
     private List<Book> books;
 
     public Author() {

@@ -1,5 +1,6 @@
 package com.repository;
 
+import com.context.BookCopy;
 import com.context.Friend;
 import com.context.Lend;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 @Repository
 public interface LendRepository extends JpaRepository<Lend, Long> {
     List<Lend> findAllByFriend(Friend friend);
+
+    List<Lend> findAllByBookCopy(BookCopy bookCopy);
 }

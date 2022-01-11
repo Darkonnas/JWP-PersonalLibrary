@@ -19,7 +19,7 @@ public class GenreService {
         return repository.findAll();
     }
 
-    public Optional<Genre> getGenreById(long id) {
+    public Optional<Genre> getGenreById(Long id) {
         return repository.findById(id);
     }
 
