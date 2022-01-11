@@ -1,7 +1,5 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -28,7 +26,6 @@ public class Shelf {
     private char startingLetter;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shelf")
-    @JsonBackReference
     private Set<BookCopy> bookCopies;
 
     public Shelf() {

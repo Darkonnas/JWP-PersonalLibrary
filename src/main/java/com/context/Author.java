@@ -1,7 +1,5 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,7 +8,7 @@ import java.util.Set;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
@@ -19,20 +17,12 @@ public class Author {
     private String lastName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    @JsonBackReference
     private Set<Book> books;
 
     public Author() {
     }
 
-    public Author(long id, String firstName, String lastName, Set<Book> books) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.books = books;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
