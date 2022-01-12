@@ -1,19 +1,18 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "book_review")
 public class BookReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "review_text", length = 1000, nullable = false)
     private String reviewText;
@@ -21,42 +20,38 @@ public class BookReview {
     @Column(name = "author_score", nullable = false)
     @Min(1)
     @Max(10)
-    private int authorScore;
+    private Integer authorScore;
 
     @Column(name = "upvote_count", nullable = false)
-    private int upvoteCount;
+    private Integer upvoteCount;
 
     @Column(name = "downvote_count", nullable = false)
-    private int downvoteCount;
+    private Integer downvoteCount;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "author_id", nullable = false)
     private Friend author;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
-    @JsonBackReference
-    private Set<BookReviewComment> comments;
+    @JsonIgnore
+    private List<BookReviewComment> comments;
 
     public BookReview() {}
 
-    public BookReview(long id, String reviewText, int authorScore, int upvoteCount, int downvoteCount, Book book, Friend author, Set<BookReviewComment> comments) {
-        this.id = id;
+    public BookReview(String reviewText, Integer authorScore, Integer upvoteCount, Integer downvoteCount, Book book, Friend author) {
         this.reviewText = reviewText;
         this.authorScore = authorScore;
         this.upvoteCount = upvoteCount;
         this.downvoteCount = downvoteCount;
         this.book = book;
         this.author = author;
-        this.comments = comments;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -64,15 +59,15 @@ public class BookReview {
         return reviewText;
     }
 
-    public int getAuthorScore() {
+    public Integer getAuthorScore() {
         return authorScore;
     }
 
-    public int getUpvoteCount() {
+    public Integer getUpvoteCount() {
         return upvoteCount;
     }
 
-    public int getDownvoteCount() {
+    public Integer getDownvoteCount() {
         return downvoteCount;
     }
 
@@ -84,7 +79,23 @@ public class BookReview {
         return author;
     }
 
-    public Set<BookReviewComment> getComments() {
+    public List<BookReviewComment> getComments() {
         return comments;
+    }
+
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
+    }
+
+    public void setAuthorScore(Integer authorScore) {
+        this.authorScore = authorScore;
+    }
+
+    public void setUpvoteCount(Integer upvoteCount) {
+        this.upvoteCount = upvoteCount;
+    }
+
+    public void setDownvoteCount(Integer downvoteCount) {
+        this.downvoteCount = downvoteCount;
     }
 }

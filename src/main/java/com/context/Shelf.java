@@ -1,71 +1,64 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "shelf")
 public class Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "level", nullable = false)
-    private long level;
+    private Long level;
 
     @Column(name = "rack", nullable = false)
-    private long rack;
+    private Long rack;
 
     @Column(name = "room", nullable = false)
-    private long room;
+    private Long room;
 
     @Column(name = "capacity")
-    private long capacity;
+    private Long capacity;
 
     @Column(name = "starting_letter")
-    private char startingLetter;
+    private Character startingLetter;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shelf")
-    private Set<BookCopy> bookCopies;
+    @JsonIgnore
+    private List<BookCopy> bookCopies;
 
     public Shelf() {
     }
 
-    public Shelf(long id, long level, long rack, long room, long capacity, char startingLetter, Set<BookCopy> bookCopies) {
-        this.id = id;
-        this.level = level;
-        this.rack = rack;
-        this.room = room;
-        this.capacity = capacity;
-        this.startingLetter = startingLetter;
-        this.bookCopies = bookCopies;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getLevel() {
+    public Long getLevel() {
         return level;
     }
 
-    public long getRack() {
+    public Long getRack() {
         return rack;
     }
 
-    public long getRoom() {
+    public Long getRoom() {
         return room;
     }
 
-    public long getCapacity() {
+    public Long getCapacity() {
         return capacity;
     }
 
-    public char getStartingLetter() {
+    public Character getStartingLetter() {
         return startingLetter;
     }
 
-    public Set<BookCopy> getBookCopies() {
+    public List<BookCopy> getBookCopies() {
         return bookCopies;
     }
 

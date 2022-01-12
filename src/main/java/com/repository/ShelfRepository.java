@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface ShelfRepository extends JpaRepository<Shelf, Long> {
-    List<Shelf> findAllByLevel(long level);
+    List<Shelf> findAllByLevel(Long level);
 
-    List<Shelf> findAllByRack(long rack);
+    List<Shelf> findAllByRack(Long rack);
 
-    List<Shelf> findAllByRoom(long room);
+    List<Shelf> findAllByRoom(Long room);
 
     List<Shelf> findAllByStartingLetter(char startingLetter);
 }

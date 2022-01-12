@@ -1,7 +1,5 @@
 package com.context;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,32 +7,29 @@ import javax.persistence.*;
 public class BookReviewComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "comment_text", length = 1000, nullable = false)
     private String commentText;
 
     @Column(name = "upvote_count", nullable = false)
-    private int upvoteCount;
+    private Integer upvoteCount;
 
     @Column(name = "downvote_count", nullable = false)
-    private int downvoteCount;
+    private Integer downvoteCount;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "review_id", nullable = false)
     private BookReview review;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "author_id", nullable = false)
     private Friend author;
 
     public BookReviewComment() {
     }
 
-    public BookReviewComment(long id, String commentText, int upvoteCount, int downvoteCount, BookReview review, Friend author) {
-        this.id = id;
+    public BookReviewComment(String commentText, Integer upvoteCount, Integer downvoteCount, BookReview review, Friend author) {
         this.commentText = commentText;
         this.upvoteCount = upvoteCount;
         this.downvoteCount = downvoteCount;
@@ -42,7 +37,7 @@ public class BookReviewComment {
         this.author = author;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -50,11 +45,11 @@ public class BookReviewComment {
         return commentText;
     }
 
-    public int getUpvoteCount() {
+    public Integer getUpvoteCount() {
         return upvoteCount;
     }
 
-    public int getDownvoteCount() {
+    public Integer getDownvoteCount() {
         return downvoteCount;
     }
 
@@ -64,5 +59,17 @@ public class BookReviewComment {
 
     public Friend getAuthor() {
         return author;
+    }
+
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
+    public void setUpvoteCount(Integer upvoteCount) {
+        this.upvoteCount = upvoteCount;
+    }
+
+    public void setDownvoteCount(Integer downvoteCount) {
+        this.downvoteCount = downvoteCount;
     }
 }

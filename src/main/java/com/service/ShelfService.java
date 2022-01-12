@@ -1,5 +1,6 @@
 package com.service;
 
+import com.context.BookCopy;
 import com.context.Shelf;
 import com.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,15 @@ public class ShelfService {
         return repository.findAll();
     }
 
-    public List<Shelf> getShelvesByLevel(long level) {
+    public List<Shelf> getShelvesByLevel(Long level) {
         return repository.findAllByLevel(level);
     }
 
-    public List<Shelf> getShelvesByRack(long rack) {
+    public List<Shelf> getShelvesByRack(Long rack) {
         return repository.findAllByRack(rack);
     }
 
-    public List<Shelf> getShelvesByRoom(long room) {
+    public List<Shelf> getShelvesByRoom(Long room) {
         return repository.findAllByRoom(room);
     }
 
@@ -35,7 +36,7 @@ public class ShelfService {
         return repository.findAllByStartingLetter(startingLetter);
     }
 
-    public Optional<Shelf> getShelfById(long id) {
+    public Optional<Shelf> getShelfById(Long id) {
         return repository.findById(id);
     }
 
@@ -45,5 +46,13 @@ public class ShelfService {
 
     public void deleteShelf(Shelf shelf) {
         repository.delete(shelf);
+    }
+
+    public boolean canShelfStoreBookCopy(Shelf shelf, BookCopy bookCopy) {
+        if (shelf.getCapacity() != null && shelf.getCapacity() == shelf.getBookCopies().size()) {
+            return false;
+        }
+
+        return shelf.getStartingLetter() == null || shelf.getStartingLetter() == bookCopy.getBook().getTitle().charAt(0);
     }
 }

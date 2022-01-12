@@ -1,7 +1,9 @@
 package com.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "genre")
@@ -21,16 +23,10 @@ public class Genre {
     private Genre parentGenre;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
-    private Set<Book> books;
+    @JsonIgnore
+    private List<Book> books;
 
     public Genre() {
-    }
-
-    public Genre(String title, String description, Genre parentGenre, Set<Book> books) {
-        this.title = title;
-        this.description = description;
-        this.parentGenre = parentGenre;
-        this.books = books;
     }
 
     public Long getId() {
@@ -49,7 +45,7 @@ public class Genre {
         return parentGenre;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
