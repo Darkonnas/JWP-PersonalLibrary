@@ -13,16 +13,16 @@ public class Shelf {
     private Long id;
 
     @Column(name = "level", nullable = false)
-    private Long level;
+    private Integer level;
 
     @Column(name = "rack", nullable = false)
-    private Long rack;
+    private Integer rack;
 
     @Column(name = "room", nullable = false)
-    private Long room;
+    private Integer room;
 
     @Column(name = "capacity")
-    private Long capacity;
+    private Integer capacity;
 
     @Column(name = "starting_letter")
     private Character startingLetter;
@@ -38,19 +38,19 @@ public class Shelf {
         return id;
     }
 
-    public Long getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public Long getRack() {
+    public Integer getRack() {
         return rack;
     }
 
-    public Long getRoom() {
+    public Integer getRoom() {
         return room;
     }
 
-    public Long getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 

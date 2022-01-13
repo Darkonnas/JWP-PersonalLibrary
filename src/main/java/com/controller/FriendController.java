@@ -81,8 +81,8 @@ public class FriendController {
     @Operation(summary = "Update an friend", operationId = "updateFriend")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Friend was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Friend not found")
+            @ApiResponse(responseCode = "404", description = "Friend not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateFriend(@PathVariable Long id, @RequestBody Friend friend) {
@@ -100,8 +100,8 @@ public class FriendController {
     @Operation(summary = "Delete an friend", operationId = "deleteFriend")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Friend was deleted"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Friend not found")
+            @ApiResponse(responseCode = "404", description = "Friend not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteFriend(@PathVariable Long id) {

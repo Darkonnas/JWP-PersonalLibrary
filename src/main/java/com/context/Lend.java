@@ -87,6 +87,10 @@ public class Lend {
         this.lendStatus = lendStatus;
     }
 
+    public void setLendExtensions(List<LendExtension> lendExtensions) {
+        this.lendExtensions = lendExtensions;
+    }
+
     public enum LendStatus {
         LENT,
         OVERDUE,

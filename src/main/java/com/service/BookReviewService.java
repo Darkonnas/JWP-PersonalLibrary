@@ -25,14 +25,6 @@ public class BookReviewService {
         return bookReviewRepository.findAll();
     }
 
-    public List<BookReview> getBookReviewsForBook(Book book) {
-        return bookReviewRepository.findAllByBook(book);
-    }
-
-    public List<BookReviewComment> getBookReviewCommentsForBookReview(BookReview bookReview) {
-        return bookReviewCommentRepository.findAllByReview(bookReview);
-    }
-
     public Optional<BookReview> getBookReviewById(Long id) {
         return bookReviewRepository.findById(id);
     }

@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.context.Lend;
 import com.context.LendExtension;
 import com.service.LendService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Optional;
 
 @RestController
@@ -28,10 +25,10 @@ public class LendExtensionController {
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Responded to lend extension"),
             @ApiResponse(responseCode = "400", description = "Incorrect extension decision"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Lend extension not found")
+            @ApiResponse(responseCode = "404", description = "Lend extension not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}/respond", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> respondToLendExtension(@PathVariable Long id, @RequestParam LendExtension.LendExtensionStatus extensionDecision) {
         if (extensionDecision == LendExtension.LendExtensionStatus.PENDING) {
             return ResponseEntity.badRequest().build();
@@ -47,17 +44,9 @@ public class LendExtensionController {
             return ResponseEntity.badRequest().build();
         }
 
-        Lend correspondingLend = existingLendExtension.get().getLend();
-
         switch (extensionDecision) {
             case APPROVED:
-                correspondingLend.setLendDuration(correspondingLend.getLendDuration() + existingLendExtension.get().getExtensionDuration());
-
-                if (correspondingLend.getLendTime().plusDays(correspondingLend.getLendDuration() + 1).isAfter(LocalDateTime.now(ZoneOffset.UTC)) && correspondingLend.getLendStatus() == Lend.LendStatus.OVERDUE) {
-                    correspondingLend.setLendStatus(Lend.LendStatus.LENT);
-                }
-
-                lendService.saveLend(correspondingLend);
+                lendService.approveLendExtension(existingLendExtension.get());
             case DECLINED:
             default:
                 existingLendExtension.get().setExtensionStatus(extensionDecision);

@@ -19,7 +19,7 @@ public class Book {
     private String description;
 
     @Column(name = "number_of_pages")
-    private Long numberOfPages;
+    private Integer numberOfPages;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
@@ -33,10 +33,14 @@ public class Book {
     @JsonIgnore
     private List<BookCopy> copies;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @JsonIgnore
+    private List<BookReview> bookReviews;
+
     public Book() {
     }
 
-    public Book(String title, String description, Long numberOfPages, Author author, Genre genre) {
+    public Book(String title, String description, Integer numberOfPages, Author author, Genre genre) {
         this.title = title;
         this.description = description;
         this.numberOfPages = numberOfPages;
@@ -56,7 +60,7 @@ public class Book {
         return description;
     }
 
-    public Long getNumberOfPages() {
+    public Integer getNumberOfPages() {
         return numberOfPages;
     }
 
@@ -72,7 +76,19 @@ public class Book {
         return copies;
     }
 
-    public void updateBook(String title, String description, Long numberOfPages, Author author, Genre genre) {
+    public List<BookReview> getBookReviews() {
+        return bookReviews;
+    }
+
+    public void setCopies(List<BookCopy> copies) {
+        this.copies = copies;
+    }
+
+    public void setBookReviews(List<BookReview> bookReviews) {
+        this.bookReviews = bookReviews;
+    }
+
+    public void updateBook(String title, String description, Integer numberOfPages, Author author, Genre genre) {
         this.title = title;
         this.description = description;
         this.numberOfPages = numberOfPages;

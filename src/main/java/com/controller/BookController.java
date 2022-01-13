@@ -4,9 +4,7 @@ import com.context.Author;
 import com.context.Book;
 import com.context.BookCopy;
 import com.context.Genre;
-import com.service.AuthorService;
 import com.service.BookService;
-import com.service.GenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,13 +25,9 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
-    private final AuthorService authorService;
-    private final GenreService genreService;
 
-    public BookController(BookService service, AuthorService authorService, GenreService genreService) {
+    public BookController(BookService service) {
         this.bookService = service;
-        this.authorService = authorService;
-        this.genreService = genreService;
     }
 
     @Operation(summary = "Search books", operationId = "getBooks")
@@ -105,25 +99,25 @@ public class BookController {
             @ApiResponse(responseCode = "201", description = "Book was created",
                     headers = {@Header(name = "location", schema = @Schema(type = "String"))}
             ),
-            @ApiResponse(responseCode = "404", description = "Either author or genre were not found"),
+            @ApiResponse(responseCode = "400", description = "Either author or genre were not found"),
             @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<String> addBook(@RequestParam String title,
                                           @RequestBody(required = false) String description,
-                                          @RequestParam(required = false) Long numberOfPages,
+                                          @RequestParam(required = false) Integer numberOfPages,
                                           @RequestParam Long authorId,
                                           @RequestParam Long genreId) {
-        Optional<Author> author = authorService.getAuthorById(authorId);
+        Optional<Author> author = bookService.getAuthorById(authorId);
 
         if (author.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find author with id: %d", authorId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find author with id: %d", authorId));
         }
 
-        Optional<Genre> genre = genreService.getGenreById(genreId);
+        Optional<Genre> genre = bookService.getGenreById(genreId);
 
         if (genre.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find genre with id: %d", genreId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find genre with id: %d", genreId));
         }
 
         Book book = new Book(title, description, numberOfPages, author.get(), genre.get());
@@ -137,7 +131,6 @@ public class BookController {
             @ApiResponse(responseCode = "201", description = "Book copy was added",
                     headers = {@Header(name = "location", schema = @Schema(type = "String"))}
             ),
-            @ApiResponse(responseCode = "400", description = "Book copy cannot be places on the desired shelf"),
             @ApiResponse(responseCode = "404", description = "Specified book not found"),
             @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
@@ -158,14 +151,15 @@ public class BookController {
     @Operation(summary = "Update a book", operationId = "updateBook")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Book was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Existing book, author or genre not found")
+            @ApiResponse(responseCode = "400", description = "Specified author or genre were not found"),
+            @ApiResponse(responseCode = "404", description = "Existing book not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBook(@PathVariable Long id,
                                              @RequestParam String title,
                                              @RequestBody(required = false) String description,
-                                             @RequestParam(required = false) Long numberOfPages,
+                                             @RequestParam(required = false) Integer numberOfPages,
                                              @RequestParam Long authorId,
                                              @RequestParam Long genreId) {
         Optional<Book> existingBook = bookService.getBookById(id);
@@ -174,16 +168,16 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
 
-        Optional<Author> author = authorService.getAuthorById(authorId);
+        Optional<Author> author = bookService.getAuthorById(authorId);
 
         if (author.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find author with id: %d", authorId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find author with id: %d", authorId));
         }
 
-        Optional<Genre> genre = genreService.getGenreById(genreId);
+        Optional<Genre> genre = bookService.getGenreById(genreId);
 
         if (genre.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find genre with id: %d", genreId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find genre with id: %d", genreId));
         }
 
         existingBook.get().updateBook(title, description, numberOfPages, author.get(), genre.get());
@@ -194,8 +188,8 @@ public class BookController {
     @Operation(summary = "Delete a book", operationId = "deleteBook")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Book was deleted"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Book not found")
+            @ApiResponse(responseCode = "404", description = "Book not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {

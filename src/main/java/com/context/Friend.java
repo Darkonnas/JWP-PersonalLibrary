@@ -25,7 +25,22 @@ public class Friend {
     @JsonIgnore
     private List<Lend> lends;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonIgnore
+    private List<BookReview> reviews;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonIgnore
+    private List<BookReviewComment> comments;
+
     public Friend() {
+    }
+
+    public Friend(Long id, String firstName, String lastName, String address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
     }
 
     public Long getId() {
@@ -46,6 +61,14 @@ public class Friend {
 
     public List<Lend> getLends() {
         return lends;
+    }
+
+    public List<BookReview> getReviews() {
+        return reviews;
+    }
+
+    public List<BookReviewComment> getComments() {
+        return comments;
     }
 
     public void updateFriend(Friend friend) {

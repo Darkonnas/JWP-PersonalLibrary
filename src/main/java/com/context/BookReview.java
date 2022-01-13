@@ -98,4 +98,8 @@ public class BookReview {
     public void setDownvoteCount(Integer downvoteCount) {
         this.downvoteCount = downvoteCount;
     }
+
+    public void setComments(List<BookReviewComment> comments) {
+        this.comments = comments;
+    }
 }

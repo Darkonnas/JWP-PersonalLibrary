@@ -58,8 +58,8 @@ public class BookReviewController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = java.lang.Object[].class))}
             ),
-            @ApiResponse(responseCode = "404", description = "Book not found"),
-            @ApiResponse(responseCode = "204", description = "No book reviews found")
+            @ApiResponse(responseCode = "204", description = "No book reviews found"),
+            @ApiResponse(responseCode = "404", description = "Book not found")
     })
     @GetMapping(value = "/book/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<BookReview>> getBookReviewsForBook(@PathVariable Long bookId) {
@@ -69,7 +69,7 @@ public class BookReviewController {
             return ResponseEntity.notFound().build();
         }
 
-        List<BookReview> bookReviews = bookReviewService.getBookReviewsForBook(book.get());
+        List<BookReview> bookReviews = book.get().getBookReviews();
 
         if (bookReviews.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -103,7 +103,6 @@ public class BookReviewController {
                     headers = {@Header(name = "location", schema = @Schema(type = "String"))}
             ),
             @ApiResponse(responseCode = "400", description = "Specified friend cannot review the specified book"),
-            @ApiResponse(responseCode = "404", description = "Either book or friend were not found"),
             @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -111,13 +110,13 @@ public class BookReviewController {
         Optional<Book> book = bookService.getBookById(bookId);
 
         if (book.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find book with id: %d", bookId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find book with id: %d", bookId));
         }
 
         Optional<Friend> friend = friendService.getFriendById(friendId);
 
         if (friend.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find friend with id: %d", friendId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find friend with id: %d", friendId));
         }
 
         if (!bookReviewService.canFriendReviewBook(friend.get(), book.get())) {
@@ -228,8 +227,8 @@ public class BookReviewController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = java.lang.Object[].class))}
             ),
-            @ApiResponse(responseCode = "404", description = "Book review not found"),
-            @ApiResponse(responseCode = "204", description = "No book reviews found")
+            @ApiResponse(responseCode = "204", description = "No book reviews found"),
+            @ApiResponse(responseCode = "404", description = "Book review not found")
     })
     @GetMapping(value="/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<BookReviewComment>> getBookReviewCommentsForBookReview(@PathVariable Long id) {
@@ -239,7 +238,7 @@ public class BookReviewController {
             return ResponseEntity.notFound().build();
         }
 
-        List<BookReviewComment> bookReviewComments = bookReviewService.getBookReviewCommentsForBookReview(bookReview.get());
+        List<BookReviewComment> bookReviewComments = bookReview.get().getComments();
 
         if (bookReviewComments.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -253,7 +252,8 @@ public class BookReviewController {
             @ApiResponse(responseCode = "201", description = "Book review comment added",
                     headers = {@Header(name = "location", schema = @Schema(type = "String"))}
             ),
-            @ApiResponse(responseCode = "404", description = "Book review or friend not found"),
+            @ApiResponse(responseCode = "400", description = "Specified friend not found"),
+            @ApiResponse(responseCode = "404", description = "Book review not found"),
             @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(value="/{id}/comments", produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -267,7 +267,7 @@ public class BookReviewController {
         Optional<Friend> friend = friendService.getFriendById(friendId);
 
         if (friend.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find friend with id: %d", friendId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find friend with id: %d", friendId));
         }
 
         BookReviewComment bookReviewComment = new BookReviewComment(commentText, 0, 0, bookReview.get(), friend.get());
