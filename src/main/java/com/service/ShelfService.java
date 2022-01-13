@@ -20,22 +20,6 @@ public class ShelfService {
         return repository.findAll();
     }
 
-    public List<Shelf> getShelvesByLevel(Long level) {
-        return repository.findAllByLevel(level);
-    }
-
-    public List<Shelf> getShelvesByRack(Long rack) {
-        return repository.findAllByRack(rack);
-    }
-
-    public List<Shelf> getShelvesByRoom(Long room) {
-        return repository.findAllByRoom(room);
-    }
-
-    public List<Shelf> getShelvesByStartingLetter(char startingLetter) {
-        return repository.findAllByStartingLetter(startingLetter);
-    }
-
     public Optional<Shelf> getShelfById(Long id) {
         return repository.findById(id);
     }

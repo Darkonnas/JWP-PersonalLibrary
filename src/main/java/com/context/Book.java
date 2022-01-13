@@ -80,6 +80,10 @@ public class Book {
         return bookReviews;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void setCopies(List<BookCopy> copies) {
         this.copies = copies;
     }

@@ -62,6 +62,18 @@ public class Shelf {
         return bookCopies;
     }
 
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setStartingLetter(Character startingLetter) {
+        this.startingLetter = startingLetter;
+    }
+
+    public void setBookCopies(List<BookCopy> bookCopies) {
+        this.bookCopies = bookCopies;
+    }
+
     public void updateShelf(Shelf shelf) {
         this.level = shelf.level;
         this.rack = shelf.rack;

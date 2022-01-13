@@ -58,6 +58,10 @@ public class BookCopy {
         this.bookCondition = bookCondition;
     }
 
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     public void setShelf(Shelf shelf) {
         this.shelf = shelf;
     }
