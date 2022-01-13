@@ -101,6 +101,10 @@ public class Lend {
         this.lendDuration = lendDuration;
     }
 
+    public void setBookCopy(BookCopy bookCopy) {
+        this.bookCopy = bookCopy;
+    }
+
     public enum SortingCriteria {
         LEND_TIME,
         RETURNED_TIME

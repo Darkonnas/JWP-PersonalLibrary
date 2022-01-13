@@ -49,8 +49,8 @@ class ShelfServiceTest {
         List<Shelf> firstResult = shelfService.getShelves();
         List<Shelf> secondResult = shelfService.getShelves();
 
-        assertEquals(firstResult, nonEmptyResult);
-        assertEquals(secondResult, emptyResult);
+        assertEquals(nonEmptyResult, firstResult);
+        assertEquals(emptyResult, secondResult);
     }
 
     @Test
@@ -61,8 +61,8 @@ class ShelfServiceTest {
         Optional<Shelf> firstResult = shelfService.getShelfById(0L);
         Optional<Shelf> secondResult = shelfService.getShelfById(1L);
 
-        assertEquals(firstResult, Optional.of(existingShelf));
-        assertEquals(secondResult, Optional.empty());
+        assertEquals(Optional.of(existingShelf), firstResult);
+        assertEquals(Optional.empty(), secondResult);
     }
 
     @Test
