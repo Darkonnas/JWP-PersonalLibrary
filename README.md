@@ -22,3 +22,5 @@ The application aims to help persons in possession of a lot of books by providin
 2. Exporting the current library layout in various formats.
 3. Mechanism for lending a book to a friend as well as viewing the previous lends of the book.
 4. Reviewing a lent book by friends.
+
+Swagger is mounter on `/docs/swagger-ui` and can be used to test each and every endpoint.
