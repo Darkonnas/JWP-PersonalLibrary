@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +28,8 @@ public class LendController {
     private final BookService bookService;
     private final FriendService friendService;
 
-    public LendController(LendService service, BookService bookService, FriendService friendService) {
-        this.lendService = service;
+    public LendController(LendService lendService, BookService bookService, FriendService friendService) {
+        this.lendService = lendService;
         this.bookService = bookService;
         this.friendService = friendService;
     }
@@ -105,7 +104,6 @@ public class LendController {
                     headers = {@Header(name = "location", schema = @Schema(type = "String"))}
             ),
             @ApiResponse(responseCode = "400", description = "Cannot lend the desired book to the specified friend"),
-            @ApiResponse(responseCode = "404", description = "Either book or friend were not found"),
             @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -113,7 +111,7 @@ public class LendController {
         Optional<Book> book = bookService.getBookById(bookId);
 
         if (book.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find book with id: %d", bookId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find book with id: %d", bookId));
         }
 
         Optional<BookCopy> bookCopyAvailableForLending = lendService.getAvailableCopyForLending(book.get());
@@ -125,7 +123,7 @@ public class LendController {
         Optional<Friend> friend = friendService.getFriendById(friendId);
 
         if (friend.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Cannot find friend with id: %d", friendId));
+            return ResponseEntity.badRequest().body(String.format("Cannot find friend with id: %d", friendId));
         }
 
         if (!lendService.canFriendBorrowBooks(friend.get())) {
@@ -140,21 +138,21 @@ public class LendController {
         return ResponseEntity.created(uri).build();
     }
 
-    @Operation(summary = "Update lend status", operationId = "updateLend")
+    @Operation(summary = "Update lend status", operationId = "updateLendStatus")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Lend was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Existing lend not found")
+            @ApiResponse(responseCode = "204", description = "Lend status was updated"),
+            @ApiResponse(responseCode = "404", description = "Existing lend not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PutMapping(value = "/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateLend(@PathVariable Long id, @RequestParam Lend.LendStatus lendStatus) {
+    public ResponseEntity<String> updateLendStatus(@PathVariable Long id, @RequestParam Lend.LendStatus status) {
         Optional<Lend> existingLend = lendService.getLendById(id);
 
         if (existingLend.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        existingLend.get().setLendStatus(lendStatus);
+        existingLend.get().setLendStatus(status);
         lendService.saveLend(existingLend.get());
         return ResponseEntity.noContent().build();
     }
@@ -176,7 +174,7 @@ public class LendController {
             return ResponseEntity.notFound().build();
         }
 
-        List<LendExtension> lendExtensions = lendService.getExtensionsForLend(existingLend.get());
+        List<LendExtension> lendExtensions = existingLend.get().getLendExtensions();
 
         if (lendExtensions.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -5,6 +5,8 @@ import com.repository.LendExtensionRepository;
 import com.repository.LendRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -36,20 +38,12 @@ public class LendService {
         return lendRepository.findAllByFriend(friend);
     }
 
-    public List<Lend> getLendsByBookCopy(BookCopy bookCopy) {
-        return lendRepository.findAllByBookCopy(bookCopy);
-    }
-
     public Optional<Lend> getLastLendOfBookCopy(BookCopy bookCopy) {
-        return getLendsByBookCopy(bookCopy).stream().max(Comparator.comparing(Lend::getLendTime));
-    }
-
-    public List<LendExtension> getExtensionsForLend(Lend lend) {
-        return lendExtensionRepository.findAllByLend(lend);
+        return bookCopy.getLends().stream().max(Comparator.comparing(Lend::getLendTime));
     }
 
     public Optional<LendExtension> getLastExtensionForLend(Lend lend) {
-        return getExtensionsForLend(lend).stream().max(Comparator.comparing(LendExtension::getRequestedTime));
+        return lend.getLendExtensions().stream().max(Comparator.comparing(LendExtension::getRequestedTime));
     }
 
     public boolean isBookCurrentlyLend(BookCopy bookCopy) {
@@ -63,6 +57,18 @@ public class LendService {
 
     public void saveLend(Lend lend) {
         lendRepository.save(lend);
+    }
+
+    public void approveLendExtension(LendExtension lendExtension) {
+        Lend correspondingLend = lendExtension.getLend();
+
+        correspondingLend.setLendDuration(correspondingLend.getLendDuration() + lendExtension.getExtensionDuration());
+
+        if (correspondingLend.getLendTime().plusDays(correspondingLend.getLendDuration() + 1).isAfter(LocalDateTime.now(ZoneOffset.UTC)) && correspondingLend.getLendStatus() == Lend.LendStatus.OVERDUE) {
+            correspondingLend.setLendStatus(Lend.LendStatus.LENT);
+        }
+
+        saveLend(correspondingLend);
     }
 
     public void saveLendExtension(LendExtension lendExtension) {

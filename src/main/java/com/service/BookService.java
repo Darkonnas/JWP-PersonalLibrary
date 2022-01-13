@@ -1,10 +1,10 @@
 package com.service;
 
-import com.context.Book;
-import com.context.BookCopy;
-import com.context.Shelf;
+import com.context.*;
+import com.repository.AuthorRepository;
 import com.repository.BookCopyRepository;
 import com.repository.BookRepository;
+import com.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,10 +14,14 @@ import java.util.stream.Collectors;
 public class BookService {
     private final BookRepository bookRepository;
     private final BookCopyRepository bookCopyRepository;
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
 
-    public BookService(BookRepository repository, BookCopyRepository bookCopyRepository) {
+    public BookService(BookRepository repository, BookCopyRepository bookCopyRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
         this.bookRepository = repository;
         this.bookCopyRepository = bookCopyRepository;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
     public List<Book> getBooks() {
@@ -48,16 +52,16 @@ public class BookService {
         return bookCopyRepository.findById(id);
     }
 
-    public Map<Long, Map<Long, Map<Long, List<Book>>>> getLibraryBookCopiesLayout() {
-        Map<Long, Map<Long, Map<Long, List<Book>>>> layout = new HashMap<>();
+    public Map<Integer, Map<Integer, Map<Integer, List<Book>>>> getLibraryBookCopiesLayout() {
+        Map<Integer, Map<Integer, Map<Integer, List<Book>>>> layout = new HashMap<>();
 
         List<BookCopy> bookCopies = getBookCopies().stream().filter(bookCopy -> bookCopy.getShelf() != null).collect(Collectors.toList());
 
         for (BookCopy bookCopy : bookCopies) {
             Shelf shelf = bookCopy.getShelf();
-            Long roomNo = shelf.getRoom();
-            Long rackNo = shelf.getRack();
-            Long level = shelf.getLevel();
+            Integer roomNo = shelf.getRoom();
+            Integer rackNo = shelf.getRack();
+            Integer level = shelf.getLevel();
 
             if (!layout.containsKey(roomNo)) {
                 layout.put(roomNo, new HashMap<>());
@@ -79,5 +83,37 @@ public class BookService {
 
     public void saveBookCopy(BookCopy bookCopy) {
         bookCopyRepository.save(bookCopy);
+    }
+
+    public List<Author> getAuthors() {
+        return authorRepository.findAll();
+    }
+
+    public Optional<Author> getAuthorById(Long id) {
+        return authorRepository.findById(id);
+    }
+
+    public void saveAuthor(Author author) {
+        authorRepository.save(author);
+    }
+
+    public void deleteAuthor(Author author) {
+        authorRepository.delete(author);
+    }
+
+    public List<Genre> getGenres() {
+        return genreRepository.findAll();
+    }
+
+    public Optional<Genre> getGenreById(Long id) {
+        return genreRepository.findById(id);
+    }
+
+    public void saveGenre(Genre genre) {
+        genreRepository.save(genre);
+    }
+
+    public void deleteGenre(Genre genre) {
+        genreRepository.delete(genre);
     }
 }

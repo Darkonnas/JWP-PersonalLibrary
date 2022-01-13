@@ -1,7 +1,7 @@
 package com.controller;
 
 import com.context.Author;
-import com.service.AuthorService;
+import com.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,9 +20,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
-    private final AuthorService service;
+    private final BookService service;
 
-    public AuthorController(AuthorService service) {
+    public AuthorController(BookService service) {
         this.service = service;
     }
 
@@ -81,8 +81,8 @@ public class AuthorController {
     @Operation(summary = "Update an author", operationId = "updateAuthor")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Author was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Author not found")
+            @ApiResponse(responseCode = "404", description = "Author not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateAuthor(@PathVariable Long id, @RequestBody Author author) {
@@ -100,8 +100,8 @@ public class AuthorController {
     @Operation(summary = "Delete an author", operationId = "deleteAuthor")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Author was deleted"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Author not found")
+            @ApiResponse(responseCode = "404", description = "Author not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {

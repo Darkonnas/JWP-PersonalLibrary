@@ -34,7 +34,7 @@ public class LibraryManagementController {
             @ApiResponse(responseCode = "204", description = "There are currently no book copies in the library")
     })
     @GetMapping("/layout")
-    public ResponseEntity<Map<Long, Map<Long, Map<Long, List<Book>>>>> getLibraryBookCopiesLayout() {
+    public ResponseEntity<Map<Integer, Map<Integer, Map<Integer, List<Book>>>>> getLibraryBookCopiesLayout() {
         var layout = bookService.getLibraryBookCopiesLayout();
 
         if (layout.isEmpty()) {

@@ -81,8 +81,8 @@ public class ShelfController {
     @Operation(summary = "Update an shelf", operationId = "updateShelf")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Shelf was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Shelf not found")
+            @ApiResponse(responseCode = "404", description = "Shelf not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateShelf(@PathVariable Long id, @RequestBody Shelf shelf) {
@@ -100,8 +100,8 @@ public class ShelfController {
     @Operation(summary = "Delete an shelf", operationId = "deleteShelf")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Shelf was deleted"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Shelf not found")
+            @ApiResponse(responseCode = "404", description = "Shelf not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteShelf(@PathVariable Long id) {

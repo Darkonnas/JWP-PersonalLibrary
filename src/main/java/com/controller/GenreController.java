@@ -1,7 +1,7 @@
 package com.controller;
 
 import com.context.Genre;
-import com.service.GenreService;
+import com.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,9 +20,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/genres")
 public class GenreController {
-    private final GenreService service;
+    private final BookService service;
 
-    public GenreController(GenreService service) {
+    public GenreController(BookService service) {
         this.service = service;
     }
 

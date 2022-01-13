@@ -24,10 +24,10 @@ public class BookReviewCommentController {
     @Operation(summary = "Update the text of a book review comment", operationId = "updateBookReviewCommentText")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Book review comment text was updated"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Book review comment not found")
+            @ApiResponse(responseCode = "404", description = "Book review comment not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
-    @PutMapping(value= "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value= "/{id}/text", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBookReviewCommentText(@PathVariable Long id, @RequestBody String commentText) {
         Optional<BookReviewComment> existingBookReviewComment = bookReviewService.getBookReviewCommentById(id);
 
@@ -43,8 +43,8 @@ public class BookReviewCommentController {
     @Operation(summary = "Register book review comment upvote", operationId = "registerBookReviewCommentUpvote")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Book review comment upvote was registered"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Book review or comment not found")
+            @ApiResponse(responseCode = "404", description = "Book review or comment not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(value = "/{id}/upvote", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBookReviewCommentUpvote(@PathVariable Long id, @RequestParam Integer incrementAmount) {
@@ -61,8 +61,8 @@ public class BookReviewCommentController {
     @Operation(summary = "Register book review comment downvote", operationId = "registerBookReviewCommentDownvote")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Book review comment downvote was registered"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
-            @ApiResponse(responseCode = "404", description = "Book review or comment not found")
+            @ApiResponse(responseCode = "404", description = "Book review or comment not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong")
     })
     @PostMapping(value = "/{id}/downvote", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBookReviewCommentDownvote(@PathVariable Long id, @RequestParam Integer incrementAmount) {
