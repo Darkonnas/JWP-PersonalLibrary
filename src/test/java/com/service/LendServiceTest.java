@@ -84,36 +84,4 @@ class LendServiceTest {
         assertEquals(Optional.of(lendExtension), firstResult);
         assertEquals(Optional.empty(), secondResult);
     }
-
-    @Test
-    void getLendsByFriend() {
-    }
-
-    @Test
-    void getLastLendOfBookCopy() {
-    }
-
-    @Test
-    void getLastExtensionForLend() {
-    }
-
-    @Test
-    void isBookCurrentlyLend() {
-    }
-
-    @Test
-    void getAvailableCopyForLending() {
-    }
-
-    @Test
-    void approveLendExtension() {
-    }
-
-    @Test
-    void canFriendBorrowBooks() {
-    }
-
-    @Test
-    void canExtensionBeRequestedForLend() {
-    }
 }
