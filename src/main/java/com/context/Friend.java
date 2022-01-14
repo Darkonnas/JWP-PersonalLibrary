@@ -71,6 +71,10 @@ public class Friend {
         return comments;
     }
 
+    public void setLends(List<Lend> lends) {
+        this.lends = lends;
+    }
+
     public void updateFriend(Friend friend) {
         this.firstName = friend.firstName;
         this.lastName = friend.lastName;
